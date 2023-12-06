@@ -106,13 +106,12 @@ onBeforeMount(() => {
 
 <template>
     <transition-group>
-
         <!-- Cookie Consent Overlays -->
-        <template v-if="!preferencesExist">
-            <div v-if="!preferencesExist" id="cookieconsent__overlay"></div>
+        <div v-if="!preferencesExist">
+            <div id="cookieconsent__overlay"></div>
 
             <!-- Outer Wrapper -->
-            <div v-if="!preferencesExist" id="cookieconsent" :class="{'open' : customiseOpen}">
+            <div id="cookieconsent" :class="{'open' : customiseOpen}">
 
                 <!-- Inner Wrapper -->
                 <div id="cookieconsent__wrapper">
@@ -175,15 +174,13 @@ onBeforeMount(() => {
                 </div>
 
             </div><!-- /Outer Wrapper -->
-        </template>
+        </div>
 
         <ReopenConsent v-else @click="preferencesExist = !preferencesExist"/>
     </transition-group>
 </template>
 <style lang="scss" scoped>
 @tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* we will explain what these classes do next! */
 .v-enter-active,
@@ -277,7 +274,6 @@ onBeforeMount(() => {
         }
 
         &.open {
-
             @apply border-t-0 border-b mt-0;
 
             svg {
