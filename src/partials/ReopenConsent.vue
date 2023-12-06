@@ -14,7 +14,7 @@ defineEmits(['click'])
 <style lang="scss" scoped>
 #cookieconsent__reopen {
     @apply fixed bottom-0 right-0 flex items-center text-neutral-950 mb-3 p-2 bg-white rounded-l-lg shadow-lg cursor-pointer;
-    @apply border border-neutral-200;
+    @apply border border-neutral-200 z-[999998];
     @apply will-change-transform transition translate-x-[140px] hover:translate-x-0;
 
     svg {

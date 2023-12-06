@@ -42,7 +42,7 @@ watch(checked, (value) => emit('update:modelValue', value));
 
         <p v-text="details.description"/>
 
-        <template v-if="details.cookies?.length">
+        <template v-if="details.cookies?.length ?? 0 > 0">
             <a v-if="!moreDetails" href="#"
                @click.prevent="moreDetails = true">More details</a>
 
