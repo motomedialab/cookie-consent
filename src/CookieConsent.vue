@@ -1,9 +1,11 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import type {PropType} from "vue";
-import type {cookieWindow} from "@/main";
-import {ref} from "vue";
+import {computed, onBeforeMount, ref} from "vue";
+import type {cookieWindow, preferenceTypes} from "@/main";
+import ReopenConsent from "@/partials/ReopenConsent.vue";
+import CustomiseItem from "@/partials/CustomiseItem.vue";
 
-defineProps({
+const props = defineProps({
     data: {
         type: Object as PropType<cookieWindow['cookieConsent']>,
         required: true,
@@ -11,113 +13,211 @@ defineProps({
 })
 
 const customiseOpen = ref(false);
+const preferencesExist = ref(false);
+const preferences = ref({
+    functionality: true,
+    ad: true,
+    analytics: true,
+    personalization: true,
+    security: true,
+} as preferenceTypes);
 
+// data attributes
+const buttonColor = computed(() => props.data.styling.buttonColor || '#737373');
+
+// define our customisation options
+const customSettings = props.data!.settings;
+
+const setPreferences = (values: { [key: string]: boolean }) => {
+
+    let setValues = {} as preferenceTypes;
+
+    Object.keys(preferences.value).forEach((key) => {
+        setValues[key as keyof typeof preferences.value] = values[key] ?? false;
+    });
+
+    localStorage.setItem('cookieConsent', JSON.stringify(values));
+
+    preferences.value = setValues;
+    preferencesExist.value = true;
+
+    setGtagConsent();
+    resetState();
+}
+
+const setEssential = () => {
+    let setValues = preferences.value;
+
+    Object.keys(preferences.value).forEach((key) => {
+        const typedKey = key as keyof preferenceTypes;
+        setValues[typedKey] = customSettings[typedKey]?.essential ?? false;
+    });
+
+    setPreferences(setValues);
+}
+
+const acceptAll = () => {
+    let setValues: { [key: string]: boolean } = {};
+
+    Object.keys(preferences.value).forEach((key) => {
+        setValues[key] = true;
+    });
+
+    setPreferences(setValues);
+};
+
+const setCustom = () => {
+    setPreferences(preferences.value);
+}
+
+const resetState = () => {
+    customiseOpen.value = false;
+}
+
+const setGtagConsent = (denied = false) => {
+
+    let setValues: { [key: string]: string } = {};
+
+    Object.keys(preferences.value).forEach((key) => {
+        setValues[key + '_storage'] = !denied && preferences.value[key as keyof typeof preferences.value] ? 'granted' : 'denied';
+    });
+};
+
+onBeforeMount(() => {
+
+    // @ts-ignore
+    window.dataLayer = window.dataLayer || [];
+    // @ts-ignore
+    window.gtag = () => dataLayer.push(arguments);
+
+    const storedPreferences = localStorage.getItem('cookieConsent');
+
+    if (storedPreferences) {
+        preferences.value = JSON.parse(storedPreferences);
+        preferencesExist.value = true;
+
+        setGtagConsent();
+    } else {
+        // deny by default
+        setGtagConsent(true);
+    }
+})
 </script>
 
 <template>
+    <transition-group>
 
-    <div id="cookieconsent__overlay"></div>
+        <!-- Cookie Consent Overlays -->
+        <template v-if="!preferencesExist">
+            <div v-if="!preferencesExist" id="cookieconsent__overlay"></div>
 
-    <div id="cookieconsent" :class="{'open' : customiseOpen}">
+            <!-- Outer Wrapper -->
+            <div v-if="!preferencesExist" id="cookieconsent" :class="{'open' : customiseOpen}">
 
-        <div id="cookieconsent__wrapper">
+                <!-- Inner Wrapper -->
+                <div id="cookieconsent__wrapper">
 
-            <div id="cookieconsent__content" v-if="!customiseOpen">
+                    <!-- Consent Text -->
+                    <div v-if="!customiseOpen" id="cookieconsent__content">
 
-                <strong>We use cookies</strong>
+                        <strong>We use cookies</strong>
 
-                <p>
-                    This website uses cookies in order to enhance your overall
-                    user experience.
-                </p>
+                        <p>
+                            This website uses cookies in order to enhance your overall
+                            user experience.
+                        </p>
 
-                <p v-if="data.cookiePolicy">
-                    Take a look at our <a :href="data.cookiePolicy" id="cookieconsent__link">cookie policy</a> for more information.
-                </p>
+                        <p v-if="data.cookiePolicy">
+                            Take a look at our <a id="cookieconsent__link" :href="data.cookiePolicy">cookie policy</a>
+                            for more
+                            information.
+                        </p>
 
-                <button>
-                    Only essentials
-                </button>
+                        <button @click.prevent="setEssential">
+                            Only essentials
+                        </button>
 
-                <button>
-                    Accept all
-                </button>
-            </div>
+                        <button @click.prevent="acceptAll">
+                            Accept all
+                        </button>
+                    </div>
 
-            <div id="cookieconsent__customisewrapper">
+                    <!-- Customisation Text -->
+                    <div id="cookieconsent__customisewrapper">
 
-                <a href="#" id="cookieconsent__customisebtn" :class="{'open' : customiseOpen}" @click.prevent="customiseOpen = !customiseOpen">
-                    <span>Customise</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512">
-                        <!--!Font Awesome Pro 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc.-->
-                        <path
-                            d="M224 137.4l11.3 11.3 160 160L406.6 320 384 342.6l-11.3-11.3L224 182.6 75.3 331.3 64 342.6 41.4 320l11.3-11.3 160-160L224 137.4z"/>
-                    </svg>
-                </a>
+                        <a id="cookieconsent__customisebtn" :class="{'open' : customiseOpen}" href="#"
+                           @click.prevent="customiseOpen = !customiseOpen">
+                            <span>Customise</span>
+                            <svg height="16" viewBox="0 0 448 512" width="14" xmlns="http://www.w3.org/2000/svg">
+                                <!--!Font Awesome Pro 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc.-->
+                                <path
+                                    d="M224 137.4l11.3 11.3 160 160L406.6 320 384 342.6l-11.3-11.3L224 182.6 75.3 331.3 64 342.6 41.4 320l11.3-11.3 160-160L224 137.4z"/>
+                            </svg>
+                        </a>
 
-                <div id="cookieconsent__customise" v-if="customiseOpen">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius enim explicabo harum perspiciatis,
-                        porro quibusdam temporibus veritatis voluptates! Aperiam assumenda eveniet ipsa laborum modi nihil
-                        perspiciatis provident repudiandae saepe, voluptatem?</p>
-                    <p>Amet enim explicabo, fuga iste minus porro quam quod ut? Accusantium atque blanditiis dolorem,
-                        ducimus magni nobis, nostrum perspiciatis praesentium quae, quam quibusdam quos reiciendis rerum
-                        sunt ullam veniam voluptatem!</p>
-                    <p>Alias blanditiis deleniti eligendi, excepturi iste maiores modi nobis non officia perferendis
-                        perspiciatis qui recusandae saepe sapiente, sit soluta unde voluptatibus. Asperiores atque ex
-                        excepturi necessitatibus numquam temporibus totam voluptatem!</p>
-                    <p>Fugit ipsam ipsum molestiae unde! Accusamus alias architecto commodi cumque eligendi esse et eum
-                        fugiat iusto, magnam non officiis perferendis quidem, sint velit veritatis voluptatum. Enim esse
-                        maxime numquam sequi!</p>
-                    <p>Adipisci architecto asperiores beatae culpa dicta eum molestiae tempora. Amet esse ipsum labore. Ab
-                        amet aut consequatur corporis culpa esse eveniet illum incidunt, iure maiores numquam placeat rerum
-                        temporibus voluptatum!</p>
+                        <div v-if="customiseOpen" id="cookieconsent__customise">
 
-                    <p>Adipisci architecto asperiores beatae culpa dicta eum molestiae tempora. Amet esse ipsum labore. Ab
-                        amet aut consequatur corporis culpa esse eveniet illum incidunt, iure maiores numquam placeat rerum
-                        temporibus voluptatum!</p>
+                            <ul>
+                                <CustomiseItem
+                                    v-for="(setting, type) in customSettings"
+                                    v-model="preferences[type as keyof preferenceTypes]"
+                                    :disabled="setting!.essential"
+                                    :settings="customSettings"
+                                    :type="type"
+                                />
+                            </ul>
+                        </div>
+
+                        <div v-if="customiseOpen" id="cookieconsent__customise__submit">
+                            <button @click.prevent="setCustom">Save preferences</button>
+                        </div>
+                    </div>
                 </div>
 
-                <div id="cookieconsent__customise__submit" v-if="customiseOpen">
-                    <button>Save preferences</button>
-                </div>
+            </div><!-- /Outer Wrapper -->
+        </template>
 
-
-
-            </div>
-
-        </div>
-    </div>
+        <ReopenConsent v-else @click="preferencesExist = !preferencesExist"/>
+    </transition-group>
 </template>
-
-<style>
-
-</style>
-
 <style lang="scss" scoped>
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* we will explain what these classes do next! */
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
+}
+
 .custom-btn {
-    @apply block mb-1 w-full cursor-pointer bg-opacity-90 transition-colors leading-none p-3 font-semibold text-white rounded bg-neutral-500;
+    @apply block mb-1 w-full cursor-pointer transition-opacity leading-none p-3 font-semibold text-white rounded bg-neutral-500;
+    background-color: v-bind(buttonColor);
 
     &:hover, &:disabled {
-        @apply bg-opacity-100;
+        @apply opacity-80;
     }
 }
 
-
 #cookieconsent {
-    @apply fixed bottom-0 right-0 w-80 pb-0 text-neutral-900;
+
+    --accent: v-bind(buttonColor);
+
+    @apply fixed bottom-0 right-0 font-sans w-full sm:w-96 pb-0 text-neutral-900;
     @apply flex max-h-screen z-[999999];
 
     &__wrapper {
-        @apply m-3 bg-white rounded-lg shadow border border-gray-200 overflow-y-hidden;
+        @apply w-full sm:m-3 bg-white sm:rounded-lg shadow border border-gray-200 overflow-y-hidden;
     }
 
     &__overlay {
-        @apply z-[999998] fixed top-0 left-0 w-full h-full bg-black opacity-10;
+        @apply transition-all z-[999998] fixed top-0 left-0 w-full h-full bg-black opacity-20;
     }
 
     &__content {
@@ -152,7 +252,7 @@ const customiseOpen = ref(false);
     }
 
     &__customise {
-        @apply p-4 flex-shrink overflow-y-scroll;
+        @apply flex-shrink overflow-y-scroll;
     }
 
     &__customise__submit {
@@ -165,7 +265,7 @@ const customiseOpen = ref(false);
     }
 
     &__customisebtn {
-        @apply border-t mt-4 p-4 leading-none flex justify-between cursor-pointer;
+        @apply border-t mt-4 p-5 leading-none flex justify-between cursor-pointer;
         @apply hover:bg-transparent;
 
         span {
@@ -189,7 +289,5 @@ const customiseOpen = ref(false);
             @apply rotate-180;
         }
     }
-
 }
-
 </style>
