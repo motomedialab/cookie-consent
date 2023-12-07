@@ -1,7 +1,7 @@
 {
   "name": "@motomedialab/cookie-consent",
   "description": "A JavaScript consent script that interacts directly with Google Tag manager.",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "private": false,
   "scripts": {
     "dev": "vite",
@@ -38,7 +38,7 @@
     "vite-plugin-css-injected-by-js": "^3.3.0",
     "vue-tsc": "^1.8.19"
   },
-  "main": "src/main.ts",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/motomedialab/cookie-consent.git"
