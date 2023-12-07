@@ -1,119 +1,123 @@
 <script lang="ts" setup>
-import type {PropType} from "vue";
-import {computed, onBeforeMount, ref} from "vue";
-import type {cookieWindow, preferenceTypes} from "@/main";
-import ReopenConsent from "@/partials/ReopenConsent.vue";
-import CustomiseItem from "@/partials/CustomiseItem.vue";
+import type {PropType} from 'vue'
+import {computed, onBeforeMount, ref} from 'vue'
+import type {cookieWindow, preferenceTypes} from '@/main'
+import ReopenConsent from '@/partials/ReopenConsent.vue'
+import CustomiseItem from '@/partials/CustomiseItem.vue'
 
 const props = defineProps({
     data: {
         type: Object as PropType<cookieWindow['cookieConsent']>,
-        required: true,
+        required: true
     }
 })
 
 // define our custom data attributes.
-const buttonColor = computed(() => props.data!.styling?.buttonColor || '#737373');
-const customSettings = props.data!.settings;
+const buttonColor = computed(() => props.data!.styling?.buttonColor || '#737373')
+const customSettings = props.data!.settings
 
 // reactive properties
-const customiseOpen = ref(false);
-const preferencesExist = ref(false);
+const customiseOpen = ref(false)
+const preferencesExist = ref(false)
 const preferences = ref({
     functionality: true,
     ad: true,
     analytics: true,
     personalization: true,
-    security: true,
-} as preferenceTypes);
+    security: true
+} as preferenceTypes)
 
 const preferenceManager = {
     set: (values: { [key: string]: boolean }) => {
-        let setValues = {} as preferenceTypes;
+        let setValues = {} as preferenceTypes
 
         Object.keys(preferences.value).forEach((key) => {
-            setValues[key as keyof typeof preferences.value] = values[key] ?? false;
-        });
+            setValues[key as keyof typeof preferences.value] = values[key] ?? false
+        })
 
-        localStorage.setItem('cookieConsent', JSON.stringify(values));
+        localStorage.setItem('cookieConsent', JSON.stringify(values))
 
-        preferences.value = setValues;
-        preferencesExist.value = true;
+        preferences.value = setValues
+        preferencesExist.value = true
 
-        applyGtagPreferences();
-        resetState();
+        applyGtagPreferences()
+        resetState()
     },
 
     onlyEssential: () => {
-        let setValues = preferences.value;
+        let setValues = preferences.value
 
         Object.keys(preferences.value).forEach((key) => {
-            const typedKey = key as keyof preferenceTypes;
-            setValues[typedKey] = customSettings[typedKey]?.essential ?? false;
-        });
+            const typedKey = key as keyof preferenceTypes
+            setValues[typedKey] = customSettings[typedKey]?.essential ?? false
+        })
 
-        preferenceManager.set(setValues);
+        preferenceManager.set(setValues)
     },
 
     acceptAll: () => {
-        let setValues: { [key: string]: boolean } = {};
+        let setValues: { [key: string]: boolean } = {}
 
         Object.keys(preferences.value).forEach((key) => {
-            setValues[key] = true;
-        });
+            setValues[key] = true
+        })
 
-        preferenceManager.set(setValues);
+        preferenceManager.set(setValues)
     },
 
     applyCustom: () => {
-        let setValues: { [key: string]: boolean } = {};
+        let setValues: { [key: string]: boolean } = {}
 
         // reject all by default
         Object.keys(preferences.value).forEach((key) => {
-            setValues[key] = false;
-        });
+            setValues[key] = false
+        })
 
         // process our custom settings
         Object.keys(customSettings).forEach((key) => {
-            const typedKey = key as keyof preferenceTypes;
-            setValues[typedKey] = preferences.value[typedKey];
-        });
+            const typedKey = key as keyof preferenceTypes
+            setValues[typedKey] = preferences.value[typedKey]
+        })
 
-        preferenceManager.set(setValues);
+        preferenceManager.set(setValues)
     }
 }
 
 const resetState = () => {
-    customiseOpen.value = false;
+    customiseOpen.value = false
 }
 
 const applyGtagPreferences = (denied = false) => {
-    let setValues: { [key: string]: string } = {};
+    let setValues: { [key: string]: string } = {}
 
     Object.keys(preferences.value).forEach(
-        (key) => setValues[key + '_storage'] = !denied
-        && preferences.value[key as keyof typeof preferences.value] ? 'granted' : 'denied'
-    );
+        (key) =>
+            (setValues[key + '_storage'] =
+                !denied && preferences.value[key as keyof typeof preferences.value] ? 'granted' : 'denied')
+    )
 
     // @ts-ignore: tell google our preferences.
-    window.gtag('consent', 'update', setValues);
+    window.gtag('consent', 'update', setValues)
 
-    // @ts-ignore: push event to dataLayer, so we can apply appropriate tags
-    setTimeout(() => window.dataLayer ? window.dataLayer.push({event: 'consentUpdated'}) : null, 150);
-};
+    setTimeout(
+        // @ts-ignore: push event to dataLayer, so we can apply appropriate tags
+        () => (window.dataLayer ? window.dataLayer.push({event: 'consentUpdated'}) : null),
+        150
+    )
+}
 
 onBeforeMount(() => {
-    const storedPreferences = localStorage.getItem('cookieConsent');
+    const storedPreferences = localStorage.getItem('cookieConsent')
 
     if (storedPreferences) {
-        preferences.value = JSON.parse(storedPreferences);
-        preferencesExist.value = true;
+        preferences.value = JSON.parse(storedPreferences)
+        preferencesExist.value = true
 
         // apply our preferences
-        applyGtagPreferences();
+        applyGtagPreferences()
     } else {
         // deny by default
-        applyGtagPreferences(true);
+        applyGtagPreferences(true)
     }
 })
 </script>
@@ -125,49 +129,52 @@ onBeforeMount(() => {
             <div id="cookieconsent__overlay"></div>
 
             <!-- Outer Wrapper -->
-            <div id="cookieconsent" :class="{'open' : customiseOpen}">
-
+            <div id="cookieconsent" :class="{ open: customiseOpen }">
                 <!-- Inner Wrapper -->
                 <div id="cookieconsent__wrapper">
-
                     <!-- Consent Text -->
                     <div v-if="!customiseOpen" id="cookieconsent__content">
                         <strong v-text="data.title ?? 'We use cookies'"/>
-                        <p v-text="data.description ?? 'This website uses cookies in order to enhance your overall user experience.'"/>
+                        <p
+                            v-text="
+                data.description ??
+                'This website uses cookies in order to enhance your overall user experience.'
+              "
+                        />
 
                         <p v-if="data.cookiePolicy">
-                            Choose from the options below to manage your
-                            cookie preferences. <a id="cookieconsent__link" :href="data.cookiePolicy">Click here</a> to
-                            read our cookie/privacy policy.
+                            Choose from the options below to manage your cookie preferences.
+                            <a id="cookieconsent__link" :href="data.cookiePolicy">Click here</a> to read our
+                            cookie/privacy policy.
                         </p>
 
-                        <button @click.prevent="preferenceManager.onlyEssential">
-                            Only essentials
-                        </button>
+                        <button @click.prevent="preferenceManager.onlyEssential">Only essentials</button>
 
-                        <button @click.prevent="preferenceManager.acceptAll">
-                            Accept all
-                        </button>
+                        <button @click.prevent="preferenceManager.acceptAll">Accept all</button>
                     </div>
 
                     <!-- Customisation Text -->
                     <div v-if="customSettings" id="cookieconsent__customisewrapper">
-
-                        <a id="cookieconsent__customisebtn" :class="{'open' : customiseOpen}" href="#"
-                           @click.prevent="customiseOpen = !customiseOpen">
+                        <a
+                            id="cookieconsent__customisebtn"
+                            :class="{ open: customiseOpen }"
+                            href="#"
+                            @click.prevent="customiseOpen = !customiseOpen"
+                        >
                             <span>Customise</span>
                             <svg height="16" viewBox="0 0 448 512" width="14" xmlns="http://www.w3.org/2000/svg">
                                 <!--!Font Awesome Pro 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc.-->
                                 <path
-                                    d="M224 137.4l11.3 11.3 160 160L406.6 320 384 342.6l-11.3-11.3L224 182.6 75.3 331.3 64 342.6 41.4 320l11.3-11.3 160-160L224 137.4z"/>
+                                    d="M224 137.4l11.3 11.3 160 160L406.6 320 384 342.6l-11.3-11.3L224 182.6 75.3 331.3 64 342.6 41.4 320l11.3-11.3 160-160L224 137.4z"
+                                />
                             </svg>
                         </a>
 
                         <div v-if="customiseOpen" id="cookieconsent__customise">
-
                             <ul>
                                 <CustomiseItem
                                     v-for="(setting, type) in customSettings"
+                                    v-bind:key="type"
                                     v-model="preferences[type as keyof preferenceTypes]"
                                     :disabled="setting!.essential"
                                     :settings="customSettings"
@@ -181,8 +188,8 @@ onBeforeMount(() => {
                         </div>
                     </div>
                 </div>
-
-            </div><!-- /Outer Wrapper -->
+            </div>
+            <!-- /Outer Wrapper -->
         </div>
 
         <ReopenConsent v-else @click="preferencesExist = !preferencesExist"/>
@@ -206,13 +213,13 @@ onBeforeMount(() => {
     @apply block mb-1 w-full cursor-pointer transition-opacity leading-none p-3 font-semibold text-white rounded bg-neutral-500;
     background-color: v-bind(buttonColor);
 
-    &:hover, &:disabled {
+    &:hover,
+    &:disabled {
         @apply opacity-80;
     }
 }
 
 #cookieconsent {
-
     --accent: v-bind(buttonColor);
 
     @apply fixed bottom-0 right-0 font-sans w-full sm:w-96 pb-0 text-neutral-900;
@@ -230,13 +237,14 @@ onBeforeMount(() => {
         @apply p-4;
     }
 
-    &__content, &__customise {
-
+    &__content,
+    &__customise {
         button {
             @apply custom-btn;
         }
 
-        p, strong {
+        p,
+        strong {
             @apply block leading-tight text-sm text-justify mb-3;
         }
 
@@ -262,7 +270,6 @@ onBeforeMount(() => {
     }
 
     &__customise__submit {
-
         @apply px-4 py-1 border-t mt-1;
 
         button {
