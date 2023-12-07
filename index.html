@@ -2,60 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link href="/favicon.ico" rel="icon">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Vite App</title>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments)
+        }
+
+        window.cookieConsent = {
+            mount: '#consent',
+            cookiePolicy: 'https://google.co.uk',
+            styling: {
+                buttonColor: '#0045B8',
+            },
+            settings: {
+                functionality: {
+                    essential: true,
+                    description: 'There are some cookies that we have to include in order for certain web pages to function. For this reason, they do not require your consent.',
+                    cookies: [
+                        {
+                            name: 'XSRF_TOKEN',
+                            description: 'This cookie is used to prevent cross-site request forgery (CSRF) attacks.',
+                        },
+                        {
+                            name: 'ingresstoken',
+                            description: 'This cookie ensures persistent routing between requests',
+                        },
+                        {
+                            name: 'session',
+                            description: 'This cookie is used to identify your unique session on the website.',
+                        }
+                    ]
+                },
+                analytics: {
+                    description: 'We use these for internal research on how we can improve the service we provide for all our users. These cookies assess how you interact with our website.',
+
+                },
+            }
+        }
+    </script>
 </head>
 <body>
 <div id="app" style="padding:0; margin: 0; font-size: 100px; font-weight: bold">
-    A load of website content here!
+    This is our test platform!
 </div>
-<script>
-    window.dataLayer = window.dataLayer || [];
 
-    function gtag() {
-        dataLayer.push(arguments)
-    }
-</script>
 <script src="/src/main.ts" type="module"></script>
-
-<script async>
-    window.cookieConsent = {
-        mount: '#consent',
-        cookiePolicy: 'https://google.co.uk',
-        styling: {
-            buttonColor: '#0045B8',
-        },
-        settings: {
-            functionality: {
-                essential: true,
-                description: 'There are some cookies that we have to include in order for certain web pages to function. For this reason, they do not require your consent.',
-                cookies: [
-                    {
-                        name: 'XSRF_TOKEN',
-                        description: 'This cookie is used to prevent cross-site request forgery (CSRF) attacks.',
-                    },
-                    {
-                        name: 'ingresstoken',
-                        description: 'This cookie ensures persistent routing between requests',
-                    },
-                    {
-                        name: 'session',
-                        description: 'This cookie is used to identify your unique session on the website.',
-                    }
-                ]
-            },
-            analytics: {
-                description: 'We use these for internal research on how we can improve the service we provide for all our users. These cookies assess how you interact with our website.',
-
-            },
-        }
-    }
-</script>
-
-<div id="consent">
-
-</div>
-
 </body>
 </html>
