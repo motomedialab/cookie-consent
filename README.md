@@ -2,7 +2,7 @@
 
 A flexible, highly configurable, mobile friendly, drop in JavaScript consent script that interacts directly with Google
 Tag
-manager `Consent Overview`.
+manager [Consent Overview](https://support.google.com/tagmanager/answer/10718549?hl=en).
 
 Built with EU cookie consent and the dreaded GDPR standards in mind!
 
