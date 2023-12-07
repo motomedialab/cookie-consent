@@ -14,7 +14,12 @@ Built with EU cookie consent and the dreaded GDPR standards in mind!
 
 #### NPM
 
-`npm install @motomedialab/cookie-consent`
+`npm install @motomedialab/cookie-consent --save`
+
+```javascript
+// the script must be imported as a module and loaded once gtag & window preferences have been defined
+import '@motomedialab/cookie-consent';
+```
 
 #### CDN
 
