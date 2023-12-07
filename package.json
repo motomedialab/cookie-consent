@@ -1,7 +1,7 @@
 {
   "name": "@motomedialab/cookie-consent",
   "description": "A JavaScript consent script that interacts directly with Google Tag manager.",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "private": false,
   "scripts": {
     "dev": "vite",
@@ -51,7 +51,7 @@
     "compliance"
   ],
   "author": "Chris Page",
-  "license": "ISC",
+  "license": "GNU GPLv3",
   "bugs": {
     "url": "https://github.com/motomedialab/cookie-consent/issues"
   },
