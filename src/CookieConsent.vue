@@ -144,7 +144,8 @@ onBeforeMount(() => {
 
                         <p v-if="data.cookiePolicy">
                             Choose from the options below to manage your cookie preferences.
-                            <a id="cookieconsent__link" :href="data.cookiePolicy">Click here</a> to read our
+                            <a id="cookieconsent__link" :href="data.cookiePolicy" target="_blank">Click here</a> to read
+                            our
                             cookie/privacy policy.
                         </p>
 
