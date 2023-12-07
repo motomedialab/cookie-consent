@@ -36,7 +36,12 @@ watch(checked, (value) => emit('update:modelValue', value));
 <template>
     <li v-if="details">
         <label>
-            {{ type[0].toUpperCase() + type.substring(1) }} cookies
+            <template v-if="details.title">
+                {{ details.title }}
+            </template>
+            <template v-else>
+                {{ type[0].toUpperCase() + type.substring(1) }} cookies
+            </template>
             <SliderInput v-model="checked" :disabled="disabled"/>
         </label>
 

@@ -17,7 +17,9 @@ type preferenceTypes = {
 
 type cookieWindow = Window & typeof globalThis & {
     cookieConsent: {
-        mount: string,
+        hide?: boolean,
+        title?: string,
+        description?: string,
         cookiePolicy: null | string,
         styling: {
             mode: ['light' | 'dark'],
@@ -25,6 +27,7 @@ type cookieWindow = Window & typeof globalThis & {
         },
         settings: {
             [key in keyof preferenceTypes]: {
+                title?: string,
                 essential?: boolean,
                 description: string,
                 cookies?: cookieDetails[]
@@ -37,10 +40,12 @@ export type {cookieWindow, preferenceTypes};
 
 const data = (window as cookieWindow).cookieConsent;
 
-const mountPoint = document.querySelector(data?.mount);
-if (mountPoint === null) {
-    alert('Cookie consent is not configured!');
-} else {
+if (!data.hide) {
+
+    const mountPoint = document.createElement('div');
+    mountPoint.id = 'cookie-consent';
+    document.body.append(mountPoint);
+
     createApp(CookieConsent, {
         data: data,
     }).mount(mountPoint)

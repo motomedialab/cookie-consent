@@ -15,7 +15,7 @@ defineEmits(['update:modelValue'])
 </script>
 <template>
     <div
-        :class="{'active' : modelValue}"
+        :class="{'active' : modelValue, 'disabled': disabled}"
         class="switch"
         @click.prevent="!disabled ? $emit('update:modelValue', !modelValue) : null"
     >
@@ -24,7 +24,7 @@ defineEmits(['update:modelValue'])
 </template>
 <style lang="scss" scoped>
 .switch {
-    @apply relative inline-block w-12 h-6 rounded-full shadow-inner cursor-pointer bg-neutral-400/60 hover:bg-neutral-400/70 transition-colors;
+    @apply relative inline-block w-10 h-6 rounded-full shadow-inner cursor-pointer bg-neutral-400/60 hover:bg-neutral-400/70 transition-colors;
 
     .slider {
         @apply absolute top-0 left-0 bottom-0 rounded-full w-5 h-5 my-[2px] bg-white shadow-lg;
@@ -36,8 +36,12 @@ defineEmits(['update:modelValue'])
         background-color: var(--accent);
 
         .slider {
-            @apply translate-x-[26px];
+            @apply translate-x-[18px];
         }
+    }
+
+    &.disabled {
+        @apply opacity-50 cursor-not-allowed;
     }
 }
 </style>

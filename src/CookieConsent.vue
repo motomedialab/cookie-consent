@@ -12,6 +12,11 @@ const props = defineProps({
     }
 })
 
+// define our custom data attributes.
+const buttonColor = computed(() => props.data!.styling?.buttonColor || '#737373');
+const customSettings = props.data!.settings;
+
+// reactive properties
 const customiseOpen = ref(false);
 const preferencesExist = ref(false);
 const preferences = ref({
@@ -22,84 +27,93 @@ const preferences = ref({
     security: true,
 } as preferenceTypes);
 
-// data attributes
-const buttonColor = computed(() => props.data.styling.buttonColor || '#737373');
+const preferenceManager = {
+    set: (values: { [key: string]: boolean }) => {
+        let setValues = {} as preferenceTypes;
 
-// define our customisation options
-const customSettings = props.data!.settings;
+        Object.keys(preferences.value).forEach((key) => {
+            setValues[key as keyof typeof preferences.value] = values[key] ?? false;
+        });
 
-const setPreferences = (values: { [key: string]: boolean }) => {
+        localStorage.setItem('cookieConsent', JSON.stringify(values));
 
-    let setValues = {} as preferenceTypes;
+        preferences.value = setValues;
+        preferencesExist.value = true;
 
-    Object.keys(preferences.value).forEach((key) => {
-        setValues[key as keyof typeof preferences.value] = values[key] ?? false;
-    });
+        applyGtagPreferences();
+        resetState();
+    },
 
-    localStorage.setItem('cookieConsent', JSON.stringify(values));
+    onlyEssential: () => {
+        let setValues = preferences.value;
 
-    preferences.value = setValues;
-    preferencesExist.value = true;
+        Object.keys(preferences.value).forEach((key) => {
+            const typedKey = key as keyof preferenceTypes;
+            setValues[typedKey] = customSettings[typedKey]?.essential ?? false;
+        });
 
-    setGtagConsent();
-    resetState();
-}
+        preferenceManager.set(setValues);
+    },
 
-const setEssential = () => {
-    let setValues = preferences.value;
+    acceptAll: () => {
+        let setValues: { [key: string]: boolean } = {};
 
-    Object.keys(preferences.value).forEach((key) => {
-        const typedKey = key as keyof preferenceTypes;
-        setValues[typedKey] = customSettings[typedKey]?.essential ?? false;
-    });
+        Object.keys(preferences.value).forEach((key) => {
+            setValues[key] = true;
+        });
 
-    setPreferences(setValues);
-}
+        preferenceManager.set(setValues);
+    },
 
-const acceptAll = () => {
-    let setValues: { [key: string]: boolean } = {};
+    applyCustom: () => {
+        let setValues: { [key: string]: boolean } = {};
 
-    Object.keys(preferences.value).forEach((key) => {
-        setValues[key] = true;
-    });
+        // reject all by default
+        Object.keys(preferences.value).forEach((key) => {
+            setValues[key] = false;
+        });
 
-    setPreferences(setValues);
-};
+        // process our custom settings
+        Object.keys(customSettings).forEach((key) => {
+            const typedKey = key as keyof preferenceTypes;
+            setValues[typedKey] = preferences.value[typedKey];
+        });
 
-const setCustom = () => {
-    setPreferences(preferences.value);
+        preferenceManager.set(setValues);
+    }
 }
 
 const resetState = () => {
     customiseOpen.value = false;
 }
 
-const setGtagConsent = (denied = false) => {
-
+const applyGtagPreferences = (denied = false) => {
     let setValues: { [key: string]: string } = {};
 
-    Object.keys(preferences.value).forEach((key) => {
-        setValues[key + '_storage'] = !denied && preferences.value[key as keyof typeof preferences.value] ? 'granted' : 'denied';
-    });
+    Object.keys(preferences.value).forEach(
+        (key) => setValues[key + '_storage'] = !denied
+        && preferences.value[key as keyof typeof preferences.value] ? 'granted' : 'denied'
+    );
+
+    // @ts-ignore: tell google our preferences.
+    window.gtag('consent', 'update', setValues);
+
+    // @ts-ignore: push event to dataLayer, so we can apply appropriate tags
+    setTimeout(() => window.dataLayer ? window.dataLayer.push({event: 'consentUpdated'}) : null, 150);
 };
 
 onBeforeMount(() => {
-
-    // @ts-ignore
-    window.dataLayer = window.dataLayer || [];
-    // @ts-ignore
-    window.gtag = () => dataLayer.push(arguments);
-
     const storedPreferences = localStorage.getItem('cookieConsent');
 
     if (storedPreferences) {
         preferences.value = JSON.parse(storedPreferences);
         preferencesExist.value = true;
 
-        setGtagConsent();
+        // apply our preferences
+        applyGtagPreferences();
     } else {
         // deny by default
-        setGtagConsent(true);
+        applyGtagPreferences(true);
     }
 })
 </script>
@@ -118,31 +132,26 @@ onBeforeMount(() => {
 
                     <!-- Consent Text -->
                     <div v-if="!customiseOpen" id="cookieconsent__content">
-
-                        <strong>We use cookies</strong>
-
-                        <p>
-                            This website uses cookies in order to enhance your overall
-                            user experience.
-                        </p>
+                        <strong v-text="data.title ?? 'We use cookies'"/>
+                        <p v-text="data.description ?? 'This website uses cookies in order to enhance your overall user experience.'"/>
 
                         <p v-if="data.cookiePolicy">
-                            Take a look at our <a id="cookieconsent__link" :href="data.cookiePolicy">cookie policy</a>
-                            for more
-                            information.
+                            Choose from the options below to manage your
+                            cookie preferences. <a id="cookieconsent__link" :href="data.cookiePolicy">Click here</a> to
+                            read our cookie/privacy policy.
                         </p>
 
-                        <button @click.prevent="setEssential">
+                        <button @click.prevent="preferenceManager.onlyEssential">
                             Only essentials
                         </button>
 
-                        <button @click.prevent="acceptAll">
+                        <button @click.prevent="preferenceManager.acceptAll">
                             Accept all
                         </button>
                     </div>
 
                     <!-- Customisation Text -->
-                    <div id="cookieconsent__customisewrapper">
+                    <div v-if="customSettings" id="cookieconsent__customisewrapper">
 
                         <a id="cookieconsent__customisebtn" :class="{'open' : customiseOpen}" href="#"
                            @click.prevent="customiseOpen = !customiseOpen">
@@ -168,7 +177,7 @@ onBeforeMount(() => {
                         </div>
 
                         <div v-if="customiseOpen" id="cookieconsent__customise__submit">
-                            <button @click.prevent="setCustom">Save preferences</button>
+                            <button @click.prevent="preferenceManager.applyCustom">Save preferences</button>
                         </div>
                     </div>
                 </div>
@@ -214,11 +223,11 @@ onBeforeMount(() => {
     }
 
     &__overlay {
-        @apply transition-all z-[999998] fixed top-0 left-0 w-full h-full bg-black opacity-20;
+        @apply transition-all z-[999998] fixed top-0 left-0 w-full h-full bg-black opacity-50;
     }
 
     &__content {
-        @apply p-4 pb-0;
+        @apply p-4;
     }
 
     &__content, &__customise {
@@ -262,7 +271,7 @@ onBeforeMount(() => {
     }
 
     &__customisebtn {
-        @apply border-t mt-4 p-5 leading-none flex justify-between cursor-pointer;
+        @apply border-t p-5 px-4 leading-none flex justify-between cursor-pointer;
         @apply hover:bg-transparent;
 
         span {

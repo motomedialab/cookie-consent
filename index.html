@@ -10,6 +10,13 @@
 <div id="app" style="padding:0; margin: 0; font-size: 100px; font-weight: bold">
     A load of website content here!
 </div>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments)
+    }
+</script>
 <script src="/src/main.ts" type="module"></script>
 
 <script async>
@@ -40,7 +47,7 @@
             },
             analytics: {
                 description: 'We use these for internal research on how we can improve the service we provide for all our users. These cookies assess how you interact with our website.',
-                
+
             },
         }
     }
