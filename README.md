@@ -134,13 +134,16 @@ window.cookieConsent = {
     },
 
     // per cookie settings. This gives the ability to customise the cookie settings
+    // these are in five categories, ad, analytics, functionality, personalization & security
     settings: {
         functionality: {
-            // whether the preference is essential (optional)
+            // title of the cookie group (optional, will be auto calculated by default)
+            title: 'Functionality Cookies',
+            // whether the preference is essential and cannot be turned off (optional)
             essential: true,
             // a description of what this block is for
             description: 'There are some cookies that we have to include in order for certain web pages to function. For this reason, they do not require your consent.',
-            // the cookies that are set with this preference
+            // an array of cookies that are set with this preference
             cookies: [
                 {
                     // the cookie name
@@ -181,6 +184,10 @@ window.cookieConsent = {
         ad: {
             title: 'Ads data',
             description: 'We use Google Ads to measure the performance of our advertising campaigns and to provide advertising based on visitors\' interests. We do not use cookies to collect personal information.',
+            // if no cookies are provided, a 'more details' option will be hidden for this preference
+        },
+        personalization: {
+            // personalization storage options, with nothing defined it'll simply show as 'Personalization cookies' with a toggle
         }
     }
 }
