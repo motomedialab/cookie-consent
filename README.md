@@ -23,19 +23,22 @@ import '@motomedialab/cookie-consent';
 
 #### CDN
 
-`<script src="https://cdn.jsdelivr.net/npm/@motomedialab/cookie-consent@latest" type="module"></script>`
+```html
 
-### Implementing with Google Tag Manager
+<script src="https://cdn.jsdelivr.net/npm/@motomedialab/cookie-consent@latest" type="module"></script>
+```
+
+### Configuring Google Tag Manager
 
 There is a little pre-work as detailed in the example code below. Once installed, the script will automatically apply
-the Tag Manager consent settings, and will emit a `cookieConsent` event when these preferences are changed.
+the Tag Manager consent settings, and will emit a `cookieConsent` event to Tag Manager when these preferences
+are initialised/changed.
 
-However, you still need to configure your tag to
-use [Consent Overview](https://support.google.com/tagmanager/answer/10718549?hl=en)
+For information on configuring Tag Manager for Consent Overview, see the
+documentation: [Consent Overview](https://support.google.com/tagmanager/answer/10718549?hl=en)
 
 Once this is done, you can then create a custom event *trigger* in Tag Manager to listen for this event, and use it to
-fire your *tags*,
-based on the users consent level.
+fire your *tags*, based on the users consent level.
 
 ![TagManager Trigger](https://mtcm-public.s3.eu-west-2.amazonaws.com/packages/%40motomedialab/cookie-consent/trigger.png)
 
@@ -44,7 +47,10 @@ the required consent level:
 
 ![TagManager Triggering](https://mtcm-public.s3.eu-west-2.amazonaws.com/packages/%40motomedialab/cookie-consent/triggering.png)
 
-### Example
+That's it, your Tag Manager should now be ready! Make sure to test your configuration in Preview Mode before publishing
+your changes.
+
+### JavaScript implementation
 
 ```html
 
@@ -116,21 +122,17 @@ the required consent level:
 Below is a full configuration example, with all available options:
 
 ```javascript
-window.dataLayer = window.dataLayer || [];
-
-function gtag() {
-    dataLayer.push(arguments)
-}
-
 window.cookieConsent = {
     // flag to show/hide for the current page (optional)
     hide: false,
 
-    // the title and description of the cookie consent banner (both optional)
+    // the title displayed at the top of the cookie consent banner (optional, defaults to 'We use cookies')
     title: 'We use cookies',
+
+    // the description displayed at the top of the cookie consent banner (optional, will use default)
     description: 'Our website uses cookies to improve your experience. In compliance with EU laws, we need to know if you agree to our use of cookies.',
 
-    // link to privacy policy (optional)
+    // link to privacy policy (optional, hides link if not defined)
     cookiePolicy: '/privacy',
 
     // ability to change basic styling options
@@ -144,7 +146,7 @@ window.cookieConsent = {
         functionality: {
             // title of the cookie group (optional, will be auto calculated by default)
             title: 'Functionality Cookies',
-            // whether the preference is essential and cannot be turned off (optional)
+            // whether the preference is essential and cannot be turned off (optional, false by default)
             essential: true,
             // a description of what this block is for
             description: 'There are some cookies that we have to include in order for certain web pages to function. For this reason, they do not require your consent.',

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type {PropType} from 'vue'
 import {computed, onBeforeMount, ref} from 'vue'
-import type {cookieWindow, preferenceTypes} from '@/main'
+import type {cookieWindow} from '@/main'
 import ReopenConsent from '@/partials/ReopenConsent.vue'
 import CustomiseItem from '@/partials/CustomiseItem.vue'
 
