@@ -1,11 +1,17 @@
 ## Cookie Consent
 
-A JavaScript consent script that interacts directly with Google Tag manager.
+A flexible, mobile friendly, drop in JavaScript consent script that interacts directly with Google Tag
+manager `Consent Overview`.
+Built to GDPR/EU cookie consent standards.
+
+| Widget View                            | Customise Preferences                                    |
+|----------------------------------------|----------------------------------------------------------|
+| ![Example widget](previews/widget.png) | ![Example widget expanded](previews/widget-expanded.png) |
 
 ### Usage
 
 window.cookieConsent must be defined at the top of the page, alongside creating the initial `gtag` method, before Tag
-Manager is loaded.
+Manager is loaded. A configuration example is as below:
 
 ```javascript
 window.dataLayer = window.dataLayer || [];
@@ -83,6 +89,20 @@ window.cookieConsent = {
 }
 ```
 
+### Implementing with Google Tag Manager
+
+There is a little pre-work as detailed in the example code below. Once installed, the script will automatically define
+the Tag Manager consent settings, and will emit a `cookieConsent` event when these preferences are changed.
+
+You can then create a custom event trigger in Tag Manager to listen for this event, and use it to trigger your tags,
+based on the users consent level.
+
+![TagManager Trigger](previews/trigger.png)
+
+You can then add this event as a trigger and configure each tag according to the required consent level:
+
+![TagManager Triggering](previews/triggering.png)
+
 ### Example
 
 ```html
@@ -147,4 +167,6 @@ window.cookieConsent = {
                 f.parentNode.insertBefore(j, f);
             })(window, document, 'script', 'dataLayer', window.gtmId);
 </script>
+<script type="module"
+        src="https://cdn.jsdelivr.net/npm/@motomedialab/cookie-consent@latest/dist/assets/index.js"></script>
 ```
