@@ -1,0 +1,12 @@
+.prettierrc.json
+env.d.ts
+index.html
+postcss.config.js
+tsconfig*
+vite*
+.eslintrc.cjs
+tests/**
+dist/index.html
+postcss.config.ts
+tailwind.config.ts
+.idea
