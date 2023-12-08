@@ -34,18 +34,18 @@ watch(checked, (value) => emit('update:modelValue', value))
 </script>
 <template>
     <li v-if="details">
-        <label>
+        <label data-test="label">
             <template v-if="details.title">
                 {{ details.title }}
             </template>
-            <template v-else> {{ type[0].toUpperCase() + type.substring(1) }} cookies</template>
+            <template v-else>{{ type[0].toUpperCase() + type.substring(1) }} cookies</template>
             <SliderInput v-model="checked" :disabled="disabled"/>
         </label>
 
-        <p v-text="details.description"/>
+        <p v-if="details.description" data-test="description" v-text="details.description"/>
 
         <template v-if="details.cookies?.length ?? 0 > 0">
-            <a v-if="!moreDetails" href="#" @click.prevent="moreDetails = true">More details</a>
+            <a v-if="!moreDetails" data-test="details-btn" href="#" @click.prevent="moreDetails = true">More details</a>
 
             <div v-if="moreDetails" class="details">
                 <ul v-for="(cookie, key) in details.cookies" v-bind:key="`${key}_${cookie.name}`">
