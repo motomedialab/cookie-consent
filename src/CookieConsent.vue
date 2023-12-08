@@ -46,6 +46,11 @@ const preferenceManager = {
   onlyEssential: () => {
     let setValues = preferences.value
 
+    if (typeof customSettings === 'undefined') {
+      preferenceManager.applyCustom()
+      return
+    }
+
     Object.keys(preferences.value).forEach((key) => {
       const typedKey = key as keyof preferenceTypes
       setValues[typedKey] = customSettings[typedKey]?.essential ?? false
@@ -73,7 +78,7 @@ const preferenceManager = {
     })
 
     // process our custom settings
-    Object.keys(customSettings).forEach((key) => {
+    Object.keys(customSettings ?? {}).forEach((key) => {
       const typedKey = key as keyof preferenceTypes
       setValues[typedKey] = preferences.value[typedKey]
     })

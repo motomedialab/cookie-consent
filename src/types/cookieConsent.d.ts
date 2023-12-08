@@ -7,7 +7,7 @@ interface cookieConsent {
     mode: ['light' | 'dark']
     buttonColor: string
   }
-  settings: {
+  settings?: {
     [key in keyof preferenceTypes]: {
       title?: string
       essential?: boolean
