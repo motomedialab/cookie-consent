@@ -6,9 +6,7 @@ manager [Consent Overview](https://support.google.com/tagmanager/answer/10718549
 
 Built with EU cookie consent and the dreaded GDPR standards in mind!
 
-| Widget View                                                                                                          | Customise Preferences                                                                                                                  |
-|----------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| ![Example widget](https://mtcm-public.s3.eu-west-2.amazonaws.com/packages/%40motomedialab/cookie-consent/widget.png) | ![Example widget expanded](https://mtcm-public.s3.eu-west-2.amazonaws.com/packages/%40motomedialab/cookie-consent/widget-expanded.png) |
+![Example Widget](https://mtcm-public.s3.eu-west-2.amazonaws.com/packages/%40motomedialab/cookie-consent/recording.gif)
 
 ### Installation
 
@@ -17,7 +15,8 @@ Built with EU cookie consent and the dreaded GDPR standards in mind!
 `npm install @motomedialab/cookie-consent --save`
 
 ```javascript
-// the script must be imported as a module and loaded once gtag & window preferences have been defined
+// import the module within your javascript
+// this must be done after configuring tag manager and options
 import '@motomedialab/cookie-consent';
 ```
 
@@ -33,6 +32,11 @@ import '@motomedialab/cookie-consent';
 There is a little pre-work as detailed in the example code below. Once installed, the script will automatically apply
 the Tag Manager consent settings, and will emit a `cookieConsent` event to Tag Manager when these preferences
 are initialised/changed.
+
+If you haven't done so already, you need to enable 'Consent Overview' in your Tag Manager account. This can be found
+within Admin > Container Settings > Additional Settings
+
+![Enable Consent Overview](https://mtcm-public.s3.eu-west-2.amazonaws.com/packages/%40motomedialab/cookie-consent/enable-consent-overview.png)
 
 For information on configuring Tag Manager for Consent Overview, see the
 documentation: [Consent Overview](https://support.google.com/tagmanager/answer/10718549?hl=en)
@@ -98,22 +102,24 @@ your changes.
             },
         }
     }
-
-            // initialise tag manager
-            (function (w, d, s, l, i) {
-                w[l] = w[l] || [];
-                w[l].push({
-                    'gtm.start':
-                            new Date().getTime(), event: 'gtm.js'
-                });
-                var f = d.getElementsByTagName(s)[0],
-                        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
-                j.async = true;
-                j.src =
-                        'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-                f.parentNode.insertBefore(j, f);
-            })(window, document, 'script', 'dataLayer', window.gtmId);
 </script>
+<!-- Google Tag Manager -->
+<script>(function (w, d, s, l, i) {
+    w[l] = w[l] || [];
+    w[l].push({
+        'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+    });
+    var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+    j.async = true;
+    j.src =
+            'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+    f.parentNode.insertBefore(j, f);
+})(window, document, 'script', 'dataLayer', window.gtmId);</script>
+<!-- End Google Tag Manager -->
+
+<!-- Cookie Consent Script -->
 <script type="module" src="https://cdn.jsdelivr.net/npm/@motomedialab/cookie-consent@latest/dist/index.js"></script>
 ```
 
@@ -137,11 +143,12 @@ window.cookieConsent = {
 
     // ability to change basic styling options
     styling: {
-        buttonColor: '#FF0000',
+        buttonColor: '#FF0000', // defaults to grey
     },
 
     // per cookie settings. This gives the ability to customise the cookie settings
     // these are in five categories, ad, analytics, functionality, personalization & security
+    // and you can have one, none, all or some of these categories
     settings: {
         functionality: {
             // title of the cookie group (optional, will be auto calculated by default)
