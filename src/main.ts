@@ -10,7 +10,7 @@ export type {cookieWindow}
 
 const data = (window as cookieWindow).cookieConsent
 
-if (!data?.hide) {
+if (!data || !data?.hide) {
     const mountPoint = document.createElement('div')
     mountPoint.id = 'cookie-consent'
     document.body.append(mountPoint)
