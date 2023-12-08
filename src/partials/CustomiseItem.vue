@@ -2,7 +2,6 @@
 import SliderInput from './SliderInput.vue'
 import type { PropType } from 'vue'
 import { computed, ref, watch } from 'vue'
-import type { cookieWindow } from '@/main'
 
 const emit = defineEmits(['update:modelValue'])
 
@@ -17,7 +16,7 @@ const props = defineProps({
   },
   settings: {
     required: true,
-    type: Object as PropType<cookieWindow['cookieConsent']['settings']>
+    type: Object as PropType<cookieConsent['settings']>
   },
   disabled: {
     required: false,

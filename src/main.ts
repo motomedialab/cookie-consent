@@ -3,10 +3,8 @@ import CookieConsent from './CookieConsent.vue'
 
 type cookieWindow = Window &
   typeof globalThis & {
-    cookieConsent: cookieConsent
+    cookieConsent?: cookieConsent
   }
-
-export type { cookieWindow }
 
 const data = (window as cookieWindow).cookieConsent
 
@@ -14,7 +12,7 @@ if (typeof data === 'undefined') {
   'console' in window &&
     console.warn(
       '🚨 Cookie Consent is not configured, create a window.cookieConsent' +
-        ' object with the required (see https://www.npmjs.com/package/@motomedialab/cookie-consent).'
+        ' object with the required configuration (see https://www.npmjs.com/package/@motomedialab/cookie-consent).'
     )
 }
 
