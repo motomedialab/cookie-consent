@@ -1,7 +1,7 @@
 {
   "name": "@motomedialab/cookie-consent",
   "description": "A JavaScript consent script that interacts directly with Google Tag manager.",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "private": false,
   "scripts": {
     "dev": "vite",
@@ -10,7 +10,7 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "publish": "npm run format && npm run build && npm publish --access public",
+    "deploy": "npm run format && npm run build && npm publish --access public",
     "format": "prettier --write src/"
   },
   "dependencies": {
