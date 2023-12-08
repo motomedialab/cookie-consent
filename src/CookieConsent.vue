@@ -210,7 +210,7 @@ onBeforeMount(() => {
 }
 
 .custom-btn {
-  @apply block mb-1 w-full cursor-pointer transition-opacity leading-none p-3 font-semibold text-white rounded bg-neutral-500;
+  @apply block mb-1 w-full cursor-pointer text-base transition-opacity leading-none p-3 font-semibold text-white rounded bg-neutral-500;
   background-color: v-bind(buttonColor);
 
   &:hover,
@@ -223,7 +223,7 @@ onBeforeMount(() => {
   --accent: v-bind(buttonColor);
 
   @apply fixed bottom-0 right-0 font-sans w-full sm:w-96 pb-0 text-neutral-900;
-  @apply flex max-h-screen z-[999999];
+  @apply flex max-h-screen z-[999999] font-sans text-base font-light;
 
   &__wrapper {
     @apply w-full sm:m-3 bg-white sm:rounded-lg shadow border border-gray-200 overflow-y-hidden;
