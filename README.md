@@ -132,11 +132,18 @@ window.cookieConsent = {
     // flag to show/hide for the current page (optional)
     hide: false,
 
-    // the title displayed at the top of the cookie consent banner (optional, defaults to 'We use cookies')
-    title: 'We use cookies',
-
-    // the description displayed at the top of the cookie consent banner (optional, will use default)
-    description: 'Our website uses cookies to improve your experience. In compliance with EU laws, we need to know if you agree to our use of cookies.',
+    // default text values, these can be overriden if necessary
+    text: {
+        title: 'We use cookies',
+        description: 'This website uses cookies in order to enhance your overall user experience.',
+        cookiePolicy: 'Choose from the options below to manage your cookie preferences. :link(Click here) to read our cookie/privacy policy.',
+        buttons: {
+            onlyEssentials: 'Only essentials',
+            acceptAll: 'Accept all',
+            customise: 'Customise',
+            savePreferences: 'Save preferences',
+        }
+    },
 
     // link to privacy policy (optional, hides link if not defined)
     cookiePolicy: '/privacy',
