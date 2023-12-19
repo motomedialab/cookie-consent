@@ -87,9 +87,12 @@ const preferenceManager = {
   }
 }
 
-const resetState = () => customiseOpen.value = false;
+const resetState = () => (customiseOpen.value = false)
 
-const cookieText = props.data?.text.cookiePolicy.replace(/:link\((.*?)\)/, `<a id="cookieconsent__link" href="${props.data?.cookiePolicy}" target="_blank">$1</a>`);
+const cookieText = props.data?.text.cookiePolicy.replace(
+    /:link\((.*?)\)/,
+    `<a id="cookieconsent__link" href="${props.data?.cookiePolicy}" target="_blank">$1</a>`
+)
 
 const applyGtagPreferences = (denied = false) => {
   let setValues: { [key: string]: string } = {}
@@ -143,8 +146,14 @@ onBeforeMount(() => {
 
             <p v-if="data.cookiePolicy" v-html="cookieText"/>
 
-            <button v-text="data.text.buttons.onlyEssentials" @click.prevent="preferenceManager.onlyEssential"/>
-            <button v-text="data.text.buttons.acceptAll" @click.prevent="preferenceManager.acceptAll"/>
+            <button
+                v-text="data.text.buttons.onlyEssentials"
+                @click.prevent="preferenceManager.onlyEssential"
+            />
+            <button
+                v-text="data.text.buttons.acceptAll"
+                @click.prevent="preferenceManager.acceptAll"
+            />
           </div>
 
           <!-- Customisation Text -->
@@ -178,7 +187,10 @@ onBeforeMount(() => {
             </div>
 
             <div v-if="customiseOpen" id="cookieconsent__customise__submit">
-              <button v-text="data.text.buttons.savePreferences" @click.prevent="preferenceManager.applyCustom"/>
+              <button
+                  v-text="data.text.buttons.savePreferences"
+                  @click.prevent="preferenceManager.applyCustom"
+              />
             </div>
           </div>
         </div>
@@ -246,7 +258,8 @@ onBeforeMount(() => {
       @apply custom-btn;
     }
 
-    p, strong {
+    p,
+    strong {
       @apply block leading-tight text-sm text-justify text-neutral-900 mb-3;
     }
 
