@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type {PropType} from 'vue'
-import {computed, onBeforeMount, ref} from 'vue'
+import type { PropType } from 'vue'
+import { computed, onBeforeMount, ref } from 'vue'
 import ReopenConsent from '@/partials/ReopenConsent.vue'
 import CustomiseItem from '@/partials/CustomiseItem.vue'
 
@@ -14,6 +14,8 @@ const props = defineProps({
 // define our custom data attributes.
 const buttonColor = computed(() => props.data!.styling?.buttonColor || '#737373')
 const customSettings = props.data!.settings
+
+console.log(props.data!.styling)
 
 // reactive properties
 const customiseOpen = ref(false)
@@ -90,26 +92,26 @@ const preferenceManager = {
 const resetState = () => (customiseOpen.value = false)
 
 const cookieText = props.data?.text.cookiePolicy.replace(
-    /:link\((.*?)\)/,
-    `<a id="cookieconsent__link" href="${props.data?.cookiePolicy}" target="_blank">$1</a>`
+  /:link\((.*?)\)/,
+  `<a id="cookieconsent__link" href="${props.data?.cookiePolicy}" target="_blank">$1</a>`
 )
 
 const applyGtagPreferences = (denied = false) => {
   let setValues: { [key: string]: string } = {}
 
   Object.keys(preferences.value).forEach(
-      (key) =>
-          (setValues[key + '_storage'] =
-              !denied && preferences.value[key as keyof typeof preferences.value] ? 'granted' : 'denied')
+    (key) =>
+      (setValues[key + '_storage'] =
+        !denied && preferences.value[key as keyof typeof preferences.value] ? 'granted' : 'denied')
   )
 
   // @ts-ignore: tell google our preferences.
   window.gtag('consent', 'update', setValues)
 
   setTimeout(
-      // @ts-ignore: push event to dataLayer, so we can apply appropriate tags
-      () => (window.dataLayer ? window.dataLayer.push({event: 'consentUpdated'}) : null),
-      150
+    // @ts-ignore: push event to dataLayer, so we can apply appropriate tags
+    () => (window.dataLayer ? window.dataLayer.push({ event: 'consentUpdated' }) : null),
+    150
   )
 }
 
@@ -141,34 +143,34 @@ onBeforeMount(() => {
         <div id="cookieconsent__wrapper">
           <!-- Consent Text -->
           <div v-if="!customiseOpen" id="cookieconsent__content">
-            <strong v-text="data.text.title"/>
-            <p v-text="data.text.description"/>
+            <strong v-text="data.text.title" />
+            <p v-text="data.text.description" />
 
-            <p v-if="data.cookiePolicy" v-html="cookieText"/>
+            <p v-if="data.cookiePolicy" v-html="cookieText" />
 
             <button
-                v-text="data.text.buttons.onlyEssentials"
-                @click.prevent="preferenceManager.onlyEssential"
+              v-text="data.text.buttons.onlyEssentials"
+              @click.prevent="preferenceManager.onlyEssential"
             />
             <button
-                v-text="data.text.buttons.acceptAll"
-                @click.prevent="preferenceManager.acceptAll"
+              v-text="data.text.buttons.acceptAll"
+              @click.prevent="preferenceManager.acceptAll"
             />
           </div>
 
           <!-- Customisation Text -->
           <div v-if="customSettings" id="cookieconsent__customisewrapper">
             <a
-                id="cookieconsent__customisebtn"
-                :class="{ open: customiseOpen }"
-                href="#"
-                @click.prevent="customiseOpen = !customiseOpen"
+              id="cookieconsent__customisebtn"
+              :class="{ open: customiseOpen }"
+              href="#"
+              @click.prevent="customiseOpen = !customiseOpen"
             >
               <span>Customise</span>
               <svg height="16" viewBox="0 0 448 512" width="14" xmlns="http://www.w3.org/2000/svg">
                 <!--!Font Awesome Pro 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc.-->
                 <path
-                    d="M224 137.4l11.3 11.3 160 160L406.6 320 384 342.6l-11.3-11.3L224 182.6 75.3 331.3 64 342.6 41.4 320l11.3-11.3 160-160L224 137.4z"
+                  d="M224 137.4l11.3 11.3 160 160L406.6 320 384 342.6l-11.3-11.3L224 182.6 75.3 331.3 64 342.6 41.4 320l11.3-11.3 160-160L224 137.4z"
                 />
               </svg>
             </a>
@@ -176,20 +178,20 @@ onBeforeMount(() => {
             <div v-if="customiseOpen" id="cookieconsent__customise">
               <ul>
                 <CustomiseItem
-                    v-for="(setting, type) in customSettings"
-                    v-bind:key="type"
-                    v-model="preferences[type as keyof preferenceTypes]"
-                    :disabled="setting!.essential"
-                    :settings="customSettings"
-                    :type="type"
+                  v-for="(setting, type) in customSettings"
+                  v-bind:key="type"
+                  v-model="preferences[type as keyof preferenceTypes]"
+                  :disabled="setting!.essential"
+                  :settings="customSettings"
+                  :type="type"
                 />
               </ul>
             </div>
 
             <div v-if="customiseOpen" id="cookieconsent__customise__submit">
               <button
-                  v-text="data.text.buttons.savePreferences"
-                  @click.prevent="preferenceManager.applyCustom"
+                v-text="data.text.buttons.savePreferences"
+                @click.prevent="preferenceManager.applyCustom"
               />
             </div>
           </div>
@@ -198,7 +200,7 @@ onBeforeMount(() => {
       <!-- /Outer Wrapper -->
     </div>
 
-    <ReopenConsent v-else @click="preferencesExist = !preferencesExist"/>
+    <ReopenConsent v-else @click="preferencesExist = !preferencesExist" />
   </transition-group>
 </template>
 <style>

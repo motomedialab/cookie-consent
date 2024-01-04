@@ -19,24 +19,27 @@ type cookieWindow = Window &
   }
 
 // @ts-ignore: will always translate to a cookieConsent object
-const data: cookieConsent = deepMerge((window as cookieWindow).cookieConsent ?? {}, {
-  cookiePolicy: null,
-  text: {
-    title: 'We use cookies',
-    description: 'This website uses cookies in order to enhance your overall user experience.',
-    cookiePolicy:
-      'Choose from the options below to manage your cookie preferences. :link(Click here) to read our cookie/privacy policy.',
-    buttons: {
-      onlyEssentials: 'Only essentials',
-      acceptAll: 'Accept all',
-      customise: 'Customise',
-      savePreferences: 'Save preferences'
+const data: cookieConsent = deepMerge(
+  {
+    cookiePolicy: null,
+    text: {
+      title: 'We use cookies',
+      description: 'This website uses cookies in order to enhance your overall user experience.',
+      cookiePolicy:
+        'Choose from the options below to manage your cookie preferences. :link(Click here) to read our cookie/privacy policy.',
+      buttons: {
+        onlyEssentials: 'Only essentials',
+        acceptAll: 'Accept all',
+        customise: 'Customise',
+        savePreferences: 'Save preferences'
+      }
+    },
+    styling: {
+      buttonColor: '#737373'
     }
-  },
-  styling: {
-    buttonColor: '#737373'
-  }
-} as cookieConsent)
+  } as cookieConsent,
+  (window as cookieWindow).cookieConsent ?? {}
+)
 
 if (typeof data === 'undefined') {
   'console' in window &&
