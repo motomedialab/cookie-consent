@@ -2,6 +2,7 @@ interface cookieConsent {
   hide?: boolean
   cookiePolicy: null | string
   text: {
+    reopen: string
     title: string
     description: string
     cookiePolicy: string

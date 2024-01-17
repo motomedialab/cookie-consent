@@ -23,6 +23,7 @@ const data: cookieConsent = deepMerge(
   {
     cookiePolicy: null,
     text: {
+      reopen: 'Cookie preferences',
       title: 'We use cookies',
       description: 'This website uses cookies in order to enhance your overall user experience.',
       cookiePolicy:

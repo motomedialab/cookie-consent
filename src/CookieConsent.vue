@@ -198,7 +198,7 @@ onBeforeMount(() => {
       <!-- /Outer Wrapper -->
     </div>
 
-    <ReopenConsent v-else @click="preferencesExist = !preferencesExist" />
+    <ReopenConsent :data="data" v-else @click="preferencesExist = !preferencesExist" />
   </transition-group>
 </template>
 <style>
