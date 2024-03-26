@@ -133,7 +133,7 @@ onBeforeMount(() => {
   <transition-group>
     <!-- Cookie Consent Overlays -->
     <div v-if="!preferencesExist">
-      <div id="cookieconsent__overlay"></div>
+      <div id="cookieconsent__overlay" class="cookie-accept-overlay"></div>
 
       <!-- Outer Wrapper -->
       <div id="cookieconsent" :class="{ open: customiseOpen }">
