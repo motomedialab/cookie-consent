@@ -36,7 +36,8 @@ const data: cookieConsent = deepMerge(
       }
     },
     styling: {
-      buttonColor: '#737373'
+      buttonColor: '#737373',
+      position: 'left'
     }
   } as cookieConsent,
   (window as cookieWindow).cookieConsent ?? {}
