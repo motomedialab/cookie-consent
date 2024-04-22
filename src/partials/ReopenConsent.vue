@@ -10,6 +10,9 @@ const props = defineProps({
   }
 })
 
+/**
+ * @returns Boolean
+ */
 const position = computed(() => props.data!.styling?.position === 'right');
 
 const positionLeft = computed(() => position.value ? 'auto' : 0);
