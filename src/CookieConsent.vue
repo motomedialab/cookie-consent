@@ -13,6 +13,9 @@ const props = defineProps({
 
 // define our custom data attributes.
 const buttonColor = computed(() => props.data!.styling?.buttonColor || '#737373')
+const position = computed(() => props.data!.styling?.position || 'right');
+const positionLeft = computed(() => position.value === 'left' ? 0 : 'auto');
+const positionRight = computed(() => position.value === 'right' ? 0 : 'auto')
 const customSettings = props.data!.settings
 
 // reactive properties
@@ -232,8 +235,10 @@ onBeforeMount(() => {
 
 #cookieconsent {
   --accent: v-bind(buttonColor);
+  left: v-bind(positionLeft);
+  right: v-bind(positionRight);
 
-  @apply fixed bottom-0 right-0 font-sans w-full sm:w-96 pb-0 text-neutral-900;
+  @apply fixed bottom-0 font-sans w-full sm:w-96 pb-0 text-neutral-900;
   @apply flex max-h-screen z-[999999] font-sans text-base font-light tracking-normal leading-normal;
 
   &__wrapper {
