@@ -71,6 +71,7 @@ your changes.
         cookiePolicy: '/privacy',
         styling: {
             buttonColor: '#333',
+            position: 'right'
         },
 
         settings: {
@@ -155,6 +156,7 @@ window.cookieConsent = {
     // ability to change basic styling options
     styling: {
         buttonColor: '#FF0000', // defaults to grey
+        position: 'right' // defaults to right side
     },
 
     // per cookie settings. This gives the ability to customise the cookie settings
