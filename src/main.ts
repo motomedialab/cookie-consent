@@ -22,6 +22,7 @@ type cookieWindow = Window &
 const data: cookieConsent = deepMerge(
   {
     cookiePolicy: null,
+    anchor: null,
     text: {
       reopen: 'Cookie preferences',
       title: 'We use cookies',

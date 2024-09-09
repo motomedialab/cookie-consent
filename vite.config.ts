@@ -10,6 +10,7 @@ import pkg from './package.json';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+    base: './',
     plugins: [
         vue(),
         cssInjectedByJsPlugin(),
@@ -21,8 +22,8 @@ export default defineConfig({
                 entryFileNames: `[name].js`,
                 chunkFileNames: `[name].js`,
                 assetFileNames: `[name].[ext]`,
-                banner: '/* Copyright 2023 MotoMediaLab - https://www.npmjs.com/package/@motomedialab/cookie-consent */',
-                footer: '/* Copyright 2023 MotoMediaLab - https://www.npmjs.com/package/@motomedialab/cookie-consent */',
+                banner: '/* Copyright 2024 MotoMediaLab - https://www.npmjs.com/package/@motomedialab/cookie-consent */',
+                footer: '/* Copyright 2024 MotoMediaLab - https://www.npmjs.com/package/@motomedialab/cookie-consent */',
             }
         }
     },

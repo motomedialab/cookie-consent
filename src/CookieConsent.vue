@@ -116,6 +116,13 @@ const applyGtagPreferences = (denied = false) => {
 onBeforeMount(() => {
   const storedPreferences = localStorage.getItem('cookieConsent')
 
+  if (props.data.anchor) {
+    document.querySelector(`a[href="${props.data.anchor}"]`)?.addEventListener('click', (e) => {
+      e.preventDefault()
+      preferencesExist.value = !preferencesExist.value
+    })
+  }
+
   if (storedPreferences) {
     preferences.value = JSON.parse(storedPreferences)
     preferencesExist.value = true
@@ -198,7 +205,11 @@ onBeforeMount(() => {
       <!-- /Outer Wrapper -->
     </div>
 
-    <ReopenConsent :data="data" v-else @click="preferencesExist = !preferencesExist" />
+    <ReopenConsent
+      :data="data"
+      v-else-if="!data.anchor"
+      @click="preferencesExist = !preferencesExist"
+    />
   </transition-group>
 </template>
 <style>

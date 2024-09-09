@@ -147,6 +147,10 @@ window.cookieConsent = {
 
     // link to privacy policy (optional, hides link if not defined)
     cookiePolicy: '/privacy',
+    
+    // instead of showing in the corner, you can specify a link with an href
+    // of the below anchor that we'll listen for clicks on. E.g. <a href="#cookie-consent">Privacy Policy</a>
+    anchor: '#cookie-consent',
 
     // ability to change basic styling options
     styling: {
