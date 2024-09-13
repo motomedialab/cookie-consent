@@ -1,3 +1,5 @@
+[![](https://data.jsdelivr.com/v1/package/npm/@motomedialab/cookie-consent/badge)](https://www.jsdelivr.com/package/npm/@motomedialab/cookie-consent)
+
 ## Cookie Consent
 
 A flexible, highly configurable, mobile friendly, drop in JavaScript consent script that interacts directly with Google
