@@ -17,6 +17,6 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: npm version ${{ steps.get_version.outputs.VERSION }} --no-git-tag-version
       - run: npm ci
-      - run: npm publish --tag=${{ steps.get_version.outputs.VERSION }} --provenance --access public
+      - run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
