@@ -14,18 +14,18 @@ defineEmits(['update:modelValue'])
 <template>
   <div
     :class="{ active: modelValue, disabled: disabled }"
-    class="switch"
+    class="__switch"
     @click.prevent="disabled ? null : $emit('update:modelValue', !modelValue)"
   >
-    <span class="slider"></span>
+    <span class="__slider"></span>
   </div>
 </template>
 <style lang="scss" scoped>
-.switch {
+.__switch {
   @apply relative inline-block w-10 h-6 rounded-full shadow-inner cursor-pointer bg-neutral-400/60 hover:bg-neutral-400/70 transition-colors;
 
-  .slider {
-    @apply absolute top-0 left-0 bottom-0 rounded-full w-5 h-5 my-[2px] bg-white shadow-lg;
+  .__slider {
+    @apply absolute padding-0 top-0 left-0 bottom-0 rounded-full w-5 h-5 my-[2px] bg-white shadow-lg;
 
     @apply will-change-transform transition translate-x-[2px];
   }
@@ -33,7 +33,7 @@ defineEmits(['update:modelValue'])
   &.active {
     background-color: var(--accent);
 
-    .slider {
+    .__slider {
       @apply translate-x-[18px];
     }
   }
