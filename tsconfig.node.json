@@ -1,6 +1,5 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.node.json",
-  "types": ["node"],
+  "extends": "@tsconfig/node18/tsconfig.json",
   "include": [
     "vite.config.*",
     "vitest.config.*",

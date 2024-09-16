@@ -43,7 +43,7 @@
     "vitest": "^1.0.2",
     "vue-tsc": "^2.1.6"
   },
-  "main": "src/main.ts",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/motomedialab/cookie-consent.git"

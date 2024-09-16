@@ -1,6 +1,6 @@
 interface cookieConsent {
   hide?: boolean
-  anchor?: string
+  anchor: null | string
   cookiePolicy: null | string
   text: {
     reopen: string
