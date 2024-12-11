@@ -140,6 +140,7 @@ window.cookieConsent = {
         title: 'We use cookies',
         description: 'This website uses cookies in order to enhance your overall user experience.',
         cookiePolicy: 'Choose from the options below to manage your cookie preferences. :link(Click here) to read our cookie/privacy policy.',
+        ariaLabel: 'View our cookie policy',
         buttons: {
             onlyEssentials: 'Only essentials',
             acceptAll: 'Accept all',
