@@ -13,15 +13,14 @@ const props = defineProps({
 /**
  * @returns Boolean
  */
-const position = computed(() => props.data!.styling?.position === 'right');
+const position = computed(() => props.data!.styling?.position === 'right')
 
-const positionLeft = computed(() => position.value ? 'auto' : 0);
-const positionRight = computed(() => position.value ? 0 : 'auto')
-const borderRadius = computed(() => position.value ? '8px 0 0 8px' : '0 8px 8px 0');
-const translateLength = computed(() => position.value ? '140px' : '-140px');
-const textPadding = computed(() => position.value ? '0 0 0 8px' : '0 8px 0 0 ');
-const flexDirection = computed(() => position.value ? 'row' : 'row-reverse');
-
+const positionLeft = computed(() => (position.value ? 'auto' : 0))
+const positionRight = computed(() => (position.value ? 0 : 'auto'))
+const borderRadius = computed(() => (position.value ? '8px 0 0 8px' : '0 8px 8px 0'))
+const translateLength = computed(() => (position.value ? '140px' : '-140px'))
+const textPadding = computed(() => (position.value ? '0 0 0 8px' : '0 8px 0 0 '))
+const flexDirection = computed(() => (position.value ? 'row' : 'row-reverse'))
 </script>
 <template>
   <button id="cookieconsent__reopen" @click.prevent="$emit('click')">
@@ -35,7 +34,6 @@ const flexDirection = computed(() => position.value ? 'row' : 'row-reverse');
   </button>
 </template>
 <style lang="scss" scoped>
-
 #cookieconsent__reopen {
   left: v-bind(positionLeft);
   right: v-bind(positionRight);
@@ -43,7 +41,7 @@ const flexDirection = computed(() => position.value ? 'row' : 'row-reverse');
   border-radius: v-bind(borderRadius);
   display: flex;
   flex-direction: v-bind(flexDirection);
-  
+
   @apply fixed bottom-0 items-center text-neutral-950 mb-3 p-2 bg-white shadow-lg cursor-pointer;
   @apply border border-neutral-200 z-[999998];
   @apply will-change-transform transition hover:translate-x-0;

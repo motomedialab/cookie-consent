@@ -16,7 +16,7 @@ interface cookieConsent {
     }
   }
   styling: {
-    buttonColor: string,
+    buttonColor: string
     position: string
   }
   settings?: {

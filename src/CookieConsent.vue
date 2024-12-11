@@ -13,9 +13,9 @@ const props = defineProps({
 
 // define our custom data attributes.
 const buttonColor = computed(() => props.data!.styling?.buttonColor || '#737373')
-const position = computed(() => props.data!.styling?.position || 'right');
-const positionLeft = computed(() => position.value === 'left' ? 0 : 'auto');
-const positionRight = computed(() => position.value === 'right' ? 0 : 'auto')
+const position = computed(() => props.data!.styling?.position || 'right')
+const positionLeft = computed(() => (position.value === 'left' ? 0 : 'auto'))
+const positionRight = computed(() => (position.value === 'right' ? 0 : 'auto'))
 const customSettings = props.data!.settings
 
 // reactive properties
