@@ -7,6 +7,7 @@ interface cookieConsent {
     title: string
     description: string
     cookiePolicy: string
+    ariaLabel: string
     buttons: {
       onlyEssentials: string
       acceptAll: string

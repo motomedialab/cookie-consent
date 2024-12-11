@@ -94,7 +94,7 @@ const resetState = () => (customiseOpen.value = false)
 
 const cookieText = props.data?.text.cookiePolicy.replace(
   /:link\((.*?)\)/,
-  `<a id="cookieconsent__link" href="${props.data?.cookiePolicy}" target="_blank">$1</a>`
+  `<a id="cookieconsent__link" href="${props.data?.cookiePolicy}" target="_blank" aria-label="${props.data?.text.ariaLabel}">$1</a>`
 )
 
 const applyGtagPreferences = (denied = false) => {
