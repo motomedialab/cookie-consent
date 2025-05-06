@@ -1,7 +1,7 @@
 {
   "name": "@motomedialab/cookie-consent",
   "description": "A JavaScript consent script that interacts directly with Google Tag manager.",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "private": false,
   "scripts": {
     "dev": "vite",

@@ -174,7 +174,7 @@ onBeforeMount(() => {
               href="#"
               @click.prevent="customiseOpen = !customiseOpen"
             >
-              <span>Customise</span>
+              <span v-text="data.text.buttons.customise" />
               <svg height="16" viewBox="0 0 448 512" width="14" xmlns="http://www.w3.org/2000/svg">
                 <!--!Font Awesome Pro 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc.-->
                 <path
