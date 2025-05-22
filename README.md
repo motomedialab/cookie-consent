@@ -222,3 +222,15 @@ window.cookieConsent = {
     }
 }
 ```
+
+### Listening for events in JS
+
+Although the package integrates with Google Analytics by default, you are able to integrate with your own package
+or provider by listening to the `consentUpdated` event on the window. Example below:
+
+```javascript
+window.addEventListener('consentUpdated', (e) => {
+    // integrate with your own provider
+    // e = {functionality: bool, ad: bool, analytics: bool, personalization: bool, security: bool}
+})
+```
