@@ -229,8 +229,9 @@ Although the package integrates with Google Analytics by default, you are able t
 or provider by listening to the `consentUpdated` event on the window. Example below:
 
 ```javascript
-window.addEventListener('consentUpdated', (e) => {
-    // integrate with your own provider
-    // e = {functionality: bool, ad: bool, analytics: bool, personalization: bool, security: bool}
+window.addEventListener('consentUpdated', ({detail: {functionality}}) => console.log(functionality))
+window.addEventListener('consentUpdated', ({detail: {functionality, ad, analytics, personalization, security}}) => {
+    // integrate with your own provider.
+    // each value will return a boolean, e.g. ad = true, personalization = false
 })
 ```
