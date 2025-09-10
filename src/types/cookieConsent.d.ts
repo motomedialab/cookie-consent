@@ -13,6 +13,8 @@ interface cookieConsent {
       acceptAll: string
       customise: string
       savePreferences: string
+      moreDetails: string
+      lessDetails: string
     }
   }
   styling: {

@@ -17,6 +17,7 @@ const position = computed(() => props.data!.styling?.position || 'right')
 const positionLeft = computed(() => (position.value === 'left' ? 0 : 'auto'))
 const positionRight = computed(() => (position.value === 'right' ? 0 : 'auto'))
 const customSettings = props.data!.settings
+const buttonText = props.data!.text.buttons
 
 // reactive properties
 const customiseOpen = ref(false)
@@ -108,7 +109,9 @@ const applyGtagPreferences = (denied = false) => {
 
   // @ts-ignore: tell google our preferences.
   window.gtag('consent', 'update', setValues)
-  window.dispatchEvent(new CustomEvent('consentUpdated', {detail: JSON.parse(JSON.stringify(preferences.value))}))
+  window.dispatchEvent(
+    new CustomEvent('consentUpdated', { detail: JSON.parse(JSON.stringify(preferences.value)) })
+  )
 
   setTimeout(
     // @ts-ignore: push event to dataLayer, so we can apply appropriate tags
@@ -191,6 +194,7 @@ onBeforeMount(() => {
                   v-bind:key="type"
                   v-model="preferences[type as keyof preferenceTypes]"
                   :disabled="setting!.essential"
+                  :button-text="buttonText"
                   :settings="customSettings"
                   :type="type"
                 />

@@ -34,7 +34,9 @@ const data: cookieConsent = deepMerge(
         onlyEssentials: 'Only essentials',
         acceptAll: 'Accept all',
         customise: 'Customise',
-        savePreferences: 'Save preferences'
+        savePreferences: 'Save preferences',
+        moreDetails: 'More details',
+        lessDetails: 'Less details'
       }
     },
     styling: {

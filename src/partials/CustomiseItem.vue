@@ -2,6 +2,7 @@
 import SliderInput from './SliderInput.vue'
 import type { PropType } from 'vue'
 import { computed, ref, watch } from 'vue'
+import cookieConsent from '@/CookieConsent.vue'
 
 const emit = defineEmits(['update:modelValue'])
 
@@ -9,6 +10,10 @@ const props = defineProps({
   modelValue: {
     required: true,
     type: Boolean
+  },
+  buttonText: {
+    required: true,
+    type: Object as PropType<cookieConsent['text']['buttons']>
   },
   type: {
     required: true,
@@ -44,9 +49,13 @@ watch(checked, (value) => emit('update:modelValue', value))
     <p v-if="details.description" data-test="description" v-text="details.description" />
 
     <template v-if="details.cookies?.length ?? 0 > 0">
-      <a v-if="!moreDetails" data-test="details-btn" href="#" @click.prevent="moreDetails = true"
-        >More details</a
-      >
+      <a
+        v-if="!moreDetails"
+        data-test="details-btn"
+        href="#"
+        @click.prevent="moreDetails = true"
+        v-text="buttonText.moreDetails"
+      />
 
       <div v-if="moreDetails" class="details">
         <ul v-for="(cookie, key) in details.cookies" v-bind:key="`${key}_${cookie.name}`">
@@ -57,7 +66,12 @@ watch(checked, (value) => emit('update:modelValue', value))
           </li>
         </ul>
 
-        <a v-if="moreDetails" href="#" @click.prevent="moreDetails = false"> Less details </a>
+        <a
+          v-if="moreDetails"
+          href="#"
+          @click.prevent="moreDetails = false"
+          v-text="buttonText.lessDetails"
+        />
       </div>
     </template>
   </li>

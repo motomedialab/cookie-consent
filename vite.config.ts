@@ -22,8 +22,8 @@ export default defineConfig({
                 entryFileNames: `[name].js`,
                 chunkFileNames: `[name].js`,
                 assetFileNames: `[name].[ext]`,
-                banner: '/* Copyright 2024 MotoMediaLab - https://www.npmjs.com/package/@motomedialab/cookie-consent */',
-                footer: '/* Copyright 2024 MotoMediaLab - https://www.npmjs.com/package/@motomedialab/cookie-consent */',
+                banner: '/* Copyright 2025 MotoMediaLab - https://www.npmjs.com/package/@motomedialab/cookie-consent */',
+                footer: '/* Copyright 2025 MotoMediaLab - https://www.npmjs.com/package/@motomedialab/cookie-consent */',
             }
         }
     },
