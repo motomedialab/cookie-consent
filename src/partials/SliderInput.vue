@@ -27,14 +27,15 @@ defineEmits(['update:modelValue'])
   .__slider {
     @apply absolute p-0 top-0 left-0 bottom-0 rounded-full w-5 h-5 my-[2px] bg-white shadow-lg;
 
-    @apply will-change-transform transition translate-x-[2px];
+    @apply will-change-transform transition;
+    transform: translateX(2px);
   }
 
   &.active {
     background-color: var(--accent);
 
     .__slider {
-      @apply translate-x-[18px];
+      transform: translateX(18px);
     }
   }
 
